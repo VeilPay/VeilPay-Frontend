@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 20
 
-  check-pnpm-version:
+  Install-Pnpm:
     runs-on: ubuntu-latest
     steps:
       - name: Setup Node.js
@@ -27,20 +27,13 @@ jobs:
         with:
           node-version: 20
 
-      - name: Check pnpm version
-        id: check_pnpm
-        run: pnpm --version
-        continue-on-error: true  #? Не останавливать выполнение, если команда завершилась с ошибкой
+      - name: Check if pnpm is installed
+        run: pnpm --version || npm install -g pnpm
 
-  install-pnpm:
-    runs-on: ubuntu-latest
-    needs: [check-pnpm-version]
-    if: ${{ needs['check-pnpm-version'].result == 'failure' }}  #? Устанавливать только если предыдущая задача завершилась ошибкой
-    steps:
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Cache pnpm modules
+        uses: actions/cache@v3
         with:
-          node-version: 20
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
