@@ -1,4 +1,4 @@
-name: Release 
+name: Release
 run-name: ${{github.actor}} is releasing ${{github.event_name}} for ${{github.repository}}
 
 on:
@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [development, main]
 
-jobs: 
+jobs:
   release:
     runs-on: ubuntu-latest
     steps:
@@ -21,11 +21,18 @@ jobs:
 
   Pnpm-Check-Version:
     runs-on: ubuntu-latest
-    needs: [release]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
       - name: Check pnpm version
         run: pnpm --version
-  
+
   Pnpm-Install:
     runs-on: ubuntu-latest
     needs: [Pnpm-Check-Version]
