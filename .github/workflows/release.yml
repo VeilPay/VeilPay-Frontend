@@ -1,5 +1,5 @@
 name: Release 
-run-name: ${{github.actor}} is releasing ${{github.event_name}} for ${{github.repository}}
+run-name: ${{github.actor}} is releasing ${{github.event_name}} in ${{github.repository}}
 
 on:
   push:
@@ -21,18 +21,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dep
-        run: pnpm install
-
-  Pnpm-Checking: 
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check pnpm version
-        run: pnpm --version
-
-  Pnpm-Installing: 
-    runs-on: ubuntu-latest
-    needs: [Pnpm-Checking]
-    steps:
       - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dep
         run: pnpm install
