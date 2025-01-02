@@ -1,5 +1,4 @@
 name: Release 
-run-name: ${{github.actor}} is releasing ${{github.event_name}} in ${{github.repository}}
 
 on:
   push:
