@@ -1,0 +1,38 @@
+name: Release 
+run-name: ${{github.actor}} is releasing ${{github.event_name}} for ${{github.repository}}
+
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+    branches: 
+      - development
+
+jobs: 
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dep
+        run: pnpm install
+
+  Pnpm-Checking: 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check pnpm version
+        run: pnpm --version
+
+  Pnpm-Installing: 
+    runs-on: ubuntu-latest
+    needs: [Pnpm-Checking]
+    steps:
+      - name: Install pnpm
+        run: pnpm install
